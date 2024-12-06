@@ -144,9 +144,9 @@ export function Badge({ position }: BadgeProps) {
               material={glossyMaterial}
             >
               <Decal
-                position={[0, 0.8, 0]}
+                position={[0, 0.3, 0]}
                 rotation={[0, 0, 0]}
-                scale={[1, 1, 1]}
+                scale={[2, 2, 2]}
               >
                 <meshStandardMaterial
                   transparent={true}
@@ -197,7 +197,7 @@ export function Badge({ position }: BadgeProps) {
               </Decal>
 
               <Decal
-                position={[-0.95, -0.2, 0.001]}
+                position={[-0.9, -1.3, 0.001]}
                 rotation={[0, 0, 0]}
                 scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
@@ -235,7 +235,7 @@ export function Badge({ position }: BadgeProps) {
               </Text>
 
               <Text
-                position={[0, 0.3, 0.001]}
+                position={[0, -0.7, 0.001]}
                 anchorX="center"
                 anchorY="top"
                 scale={0.45}
@@ -254,7 +254,7 @@ export function Badge({ position }: BadgeProps) {
                 Software Engineer
               </Text>              
 
-              <Text
+              {/* <Text
                 position={[-0.7, -0.06, 0.001]}
                 anchorX="left"
                 anchorY="top"
@@ -271,10 +271,10 @@ export function Badge({ position }: BadgeProps) {
                 }
               >
                 55 (11) 96305-0544
-              </Text>
+              </Text> */}
 
               <Decal
-                position={[-0.95, -0.7, 0.001]}
+                position={[0.9, -1.3, 0.001]}
                 rotation={[0, 0, 0]}
                 scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
@@ -291,7 +291,7 @@ export function Badge({ position }: BadgeProps) {
                 />
               </Decal>
 
-              <Text
+              {/* <Text
                 position={[-0.7, -0.55, 0.001]}
                 anchorX="left"
                 anchorY="top"
@@ -308,7 +308,7 @@ export function Badge({ position }: BadgeProps) {
                 }
               >
                 lelemm@gmail.com
-              </Text>
+              </Text> */}
 {/* 
               <Text
                 position={[-1.3, -1.2, 0.001]}
