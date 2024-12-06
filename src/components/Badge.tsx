@@ -8,13 +8,16 @@ import {
   useTexture,
 } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   BallCollider,
   CuboidCollider,
+  MeshCollider,
   RapierRigidBody,
   RigidBody,
+  useFixedJoint,
   useRopeJoint,
+  useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 
@@ -25,13 +28,13 @@ type BadgeProps = {
 };
 export function Badge({ position }: BadgeProps) {
   const { scene, materials } = useGLTF("/badge.glb");
+  const { scene: scene_clip, materials: materials_clip } = useGLTF("/clip.glb");
   const fixedJoin = useRef<RapierRigidBody>(null);
-  const joint1 = useRef<RapierRigidBody>(null);
+  const join1 = useRef<RapierRigidBody>(null);
   const card = useRef<RapierRigidBody>(null);
 
-  useRopeJoint(fixedJoin, joint1, [[0, 0, 0], [0, 0, 0], 0.5]);
-
-  useRopeJoint(joint1, card, [[0, 0, 0], [0, 0.8, 0], 2.2]);
+  useRopeJoint(fixedJoin, join1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(join1, card, [[0, 0, 0], [0, 1.4, 0], 1]);
 
   const [hovered, setHover] = useState(false);
   useCursor(hovered, "pointer", "auto", document.body);
@@ -43,15 +46,23 @@ export function Badge({ position }: BadgeProps) {
 
   Object.values(materials).forEach((material) => {
     const convertedMaterial = material as THREE.MeshStandardMaterial;
-    convertedMaterial.roughness = 0.1; // Glossy
-    convertedMaterial.metalness = 0.1; // Reflective
+    convertedMaterial.roughness = 0.3; // Glossy
+    convertedMaterial.metalness = 0.05; // Reflective
     convertedMaterial.color = new THREE.Color(0xffffff);
   });
 
+  Object.values(materials_clip).forEach((material) => {
+    const convertedMaterial = material as THREE.MeshStandardMaterial;
+    convertedMaterial.roughness = 0; // Glossy
+    convertedMaterial.metalness = 0.7; // Reflective
+    convertedMaterial.color = new THREE.Color(0xeeeeee);
+  });
+
   const glossyMaterial = new THREE.MeshStandardMaterial();
-  glossyMaterial.roughness = 0.1;
-  glossyMaterial.metalness = 0.1;
+  glossyMaterial.roughness = 0.3;
+  glossyMaterial.metalness = 0.05;
   glossyMaterial.color = new THREE.Color(0xffffff);
+
 
   useFrame(() => {
     if (card.current) {
@@ -93,14 +104,15 @@ export function Badge({ position }: BadgeProps) {
     }
   });
 
+
   return (
     <>
       <RigidBody ref={fixedJoin} type="fixed" position={[0, 3, 0]} />
-      <RigidBody position={[0, 0, 0]} ref={joint1}>
+      <RigidBody ref={join1} position={[0, 1.5, 0]}>
         <BallCollider args={[0.1]} />
-      </RigidBody>
-      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"}>
-        <CuboidCollider args={[0, 2, 0.01]} />
+        </RigidBody>
+      <RigidBody ref={card} type="dynamic" mass={100000}>
+        <CuboidCollider args={[0, 0, 0.01]} />
         <group position={[0, -1.0, 0]}>
           <group rotation={[0, -Math.PI / 2, 0]}>
             <primitive object={scene} />
@@ -277,6 +289,9 @@ export function Badge({ position }: BadgeProps) {
               </Text>
             </Plane>
           </mesh>
+        </group>
+        <group position={[0, -1.0, 0]} rotation={[0, (-Math.PI / 2), 0]}>
+          <primitive object={scene_clip} />
         </group>
       </RigidBody>
     </>
