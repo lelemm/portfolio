@@ -7,7 +7,7 @@ import {
   useGLTF,
   useTexture,
 } from "@react-three/drei";
-import { extend } from "@react-three/fiber";
+import { extend, useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import {
   BallCollider,
@@ -15,7 +15,6 @@ import {
   RapierRigidBody,
   RigidBody,
   useRopeJoint,
-  useSphericalJoint,
 } from "@react-three/rapier";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 
@@ -30,12 +29,9 @@ export function Badge({ position }: BadgeProps) {
   const joint1 = useRef<RapierRigidBody>(null);
   const card = useRef<RapierRigidBody>(null);
 
-  useRopeJoint(fixedJoin, joint1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(fixedJoin, joint1, [[0, 0, 0], [0, 0, 0], 0.5]);
 
-  useSphericalJoint(joint1, card, [
-    [0, 0, 0],
-    [0.09, 2, 0.05],
-  ]);
+  useRopeJoint(joint1, card, [[0, 0, 0], [0, 0.8, 0], 2.2]);
 
   const [hovered, setHover] = useState(false);
   useCursor(hovered, "pointer", "auto", document.body);
@@ -57,22 +53,57 @@ export function Badge({ position }: BadgeProps) {
   glossyMaterial.metalness = 0.1;
   glossyMaterial.color = new THREE.Color(0xffffff);
 
+  useFrame(() => {
+    if (card.current) {
+      const y = card.current.rotation().y;
+      if (Math.abs(y) > 0.4) {
+        card.current.applyImpulseAtPoint(
+          { x: 0, y: 0, z: y < 0 ? 0.009 : -0.009 },
+          { x: -1, y: -2, z: 0 },
+          true
+        );
+      }
+
+      if (
+        Math.sqrt(
+          Math.pow(card.current.angvel().x, 2) +
+            Math.pow(card.current.angvel().y, 2) +
+            Math.pow(card.current.angvel().z, 2)
+        ) > 1
+      ) {
+        setHover(true);
+        setTimeout(() => {
+          setHover(false);
+        }, 10);
+      }
+
+      if (
+        Math.sqrt(
+          Math.pow(card.current.angvel().x, 2) +
+            Math.pow(card.current.angvel().y, 2) +
+            Math.pow(card.current.angvel().z, 2)
+        ) < 0.1
+      ) {
+        card.current.applyImpulseAtPoint(
+          { x: 0, y: 0, z: y < 0 ? 0.009 : -0.009 },
+          { x: -1, y: -2, z: 0 },
+          true
+        );
+      }
+    }
+  });
+
   return (
     <>
       <RigidBody ref={fixedJoin} type="fixed" position={[0, 3, 0]} />
       <RigidBody position={[0, 0, 0]} ref={joint1}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody
-        ref={card}
-        type="dynamic"
-      >
+      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"}>
         <CuboidCollider args={[0, 2, 0.01]} />
         <group position={[0, -1.0, 0]}>
           <group rotation={[0, -Math.PI / 2, 0]}>
-            <primitive
-              object={scene}
-            />
+            <primitive object={scene} />
           </group>
           <mesh>
             <Plane
@@ -97,9 +128,9 @@ export function Badge({ position }: BadgeProps) {
                 />
               </Decal>
               <Decal
-                position={[-0.5, -1.4, 0.001]}
+                position={[-0.3, -1.3, 0.001]}
                 rotation={[0, 0, 0]}
-                scale={[0.3, 0.3, 0.3]}
+                scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
                 onPointerOut={() => setHover(false)}
                 onPointerDown={() => {
@@ -116,14 +147,13 @@ export function Badge({ position }: BadgeProps) {
               </Decal>
 
               <Decal
-                position={[-0.1, -1.4, 0.001]}
+                position={[0.3, -1.3, 0.001]}
                 rotation={[0, 0, 0]}
-                scale={[0.3, 0.3, 0.3]}
+                scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
                 onPointerOut={() => setHover(false)}
                 onPointerDown={() => {
-                  window.location.href =
-                    "https://github.com/lelemm/";
+                  window.location.href = "https://github.com/lelemm/";
                 }}
               >
                 <meshBasicMaterial
@@ -135,9 +165,9 @@ export function Badge({ position }: BadgeProps) {
               </Decal>
 
               <Decal
-                position={[-1.2, -0.2, 0.001]}
+                position={[-1.1, -0.2, 0.001]}
                 rotation={[0, 0, 0]}
-                scale={[0.3, 0.3, 0.3]}
+                scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
                 onPointerOut={() => setHover(false)}
                 onPointerDown={() => {
@@ -172,7 +202,7 @@ export function Badge({ position }: BadgeProps) {
               </Text>
 
               <Text
-                position={[-1, -0.06, 0.001]}
+                position={[-0.7, -0.06, 0.001]}
                 anchorX="left"
                 anchorY="top"
                 scale={0.45}
@@ -191,14 +221,13 @@ export function Badge({ position }: BadgeProps) {
               </Text>
 
               <Decal
-                position={[-1.2, -0.6, 0.001]}
+                position={[-1.1, -0.7, 0.001]}
                 rotation={[0, 0, 0]}
-                scale={[0.3, 0.3, 0.3]}
+                scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
                 onPointerOut={() => setHover(false)}
                 onPointerDown={() => {
-                  window.location.href =
-                    "mailto:lelemm@gmail.com";
+                  window.location.href = "mailto:lelemm@gmail.com";
                 }}
               >
                 <meshBasicMaterial
@@ -210,7 +239,7 @@ export function Badge({ position }: BadgeProps) {
               </Decal>
 
               <Text
-                position={[-1, -0.45, 0.001]}
+                position={[-0.7, -0.55, 0.001]}
                 anchorX="left"
                 anchorY="top"
                 scale={0.45}
@@ -229,7 +258,7 @@ export function Badge({ position }: BadgeProps) {
               </Text>
 
               <Text
-                position={[-1.3, -1.3, 0.001]}
+                position={[-1.3, -1.2, 0.001]}
                 anchorX="left"
                 anchorY="top"
                 scale={0.4}
