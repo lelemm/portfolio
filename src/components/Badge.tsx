@@ -139,7 +139,7 @@ export function Badge({ position }: BadgeProps) {
           </group>
           <mesh>
             <Plane
-              args={[2.8, 3.2]}
+              args={[2.8, 3.4]}
               position={[position[0], position[1] + 0.5, position[2]]}
               material={glossyMaterial}
             >
@@ -197,7 +197,7 @@ export function Badge({ position }: BadgeProps) {
               </Decal>
 
               <Decal
-                position={[-1.1, -0.2, 0.001]}
+                position={[-0.95, -0.2, 0.001]}
                 rotation={[0, 0, 0]}
                 scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
@@ -215,11 +215,12 @@ export function Badge({ position }: BadgeProps) {
                 />
               </Decal>
               <Text
-                position={[0, 0.3, 0.001]}
+                position={[0, 1.65, 0.001]}
                 anchorX="center"
                 anchorY="top"
                 scale={0.45}
-                fontSize={0.4}
+                fontSize={0.5}
+                fontWeight={700}
                 color="black"
                 depthOffset={-10}
                 textAlign="left"
@@ -232,6 +233,26 @@ export function Badge({ position }: BadgeProps) {
               >
                 Leandro Menezes
               </Text>
+
+              <Text
+                position={[0, 0.3, 0.001]}
+                anchorX="center"
+                anchorY="top"
+                scale={0.45}
+                fontSize={0.5}
+                fontWeight={500}
+                color="black"
+                depthOffset={-10}
+                textAlign="left"
+                material={
+                  new THREE.MeshStandardMaterial({
+                    color: "white",
+                    side: THREE.FrontSide,
+                  })
+                }
+              >
+                Software Engineer
+              </Text>              
 
               <Text
                 position={[-0.7, -0.06, 0.001]}
@@ -253,7 +274,7 @@ export function Badge({ position }: BadgeProps) {
               </Text>
 
               <Decal
-                position={[-1.1, -0.7, 0.001]}
+                position={[-0.95, -0.7, 0.001]}
                 rotation={[0, 0, 0]}
                 scale={[0.5, 0.5, 0.5]}
                 onPointerEnter={() => setHover(true)}
@@ -288,7 +309,7 @@ export function Badge({ position }: BadgeProps) {
               >
                 lelemm@gmail.com
               </Text>
-
+{/* 
               <Text
                 position={[-1.3, -1.2, 0.001]}
                 anchorX="left"
@@ -306,7 +327,7 @@ export function Badge({ position }: BadgeProps) {
                 }
               >
                 Socials:
-              </Text>
+              </Text> */}
             </Plane>
           </mesh>
         </group>
