@@ -121,7 +121,7 @@ export function Badge({ position }: BadgeProps) {
       <RigidBody ref={join1} position={[0, 1.5, 0]}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"} linearDamping={0.5} angularDamping={0.5}>
+      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"} linearDamping={0.2} angularDamping={0.2}>
         <CuboidCollider args={[0, 0, 0.01]} />
         <group
           position={[0, -1.0, 0]}
