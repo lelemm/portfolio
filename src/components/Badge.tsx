@@ -98,13 +98,13 @@ export function Badge({ position }: BadgeProps) {
         ),
         new THREE.Vector3(
           joinPosition.x + 0.05,
-          joinPosition.y + 2,
-          joinPosition.z - 0.4
+          joinPosition.y + 2.1,
+          joinPosition.z + 0.2
         ),
         new THREE.Vector3(
           joinPosition.x + 0.05,
-          joinPosition.y + 2,
-          joinPosition.z + 0.5
+          joinPosition.y + 2.1,
+          joinPosition.z + 0.4
         ),
         new THREE.Vector3(
           fixedPosition.x - 2,
@@ -121,7 +121,7 @@ export function Badge({ position }: BadgeProps) {
       <RigidBody ref={join1} position={[0, 1.5, 0]}>
         <BallCollider args={[0.1]} />
       </RigidBody>
-      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"}>
+      <RigidBody ref={card} type={hovered ? "kinematicPosition" : "dynamic"} linearDamping={0.5} angularDamping={0.5}>
         <CuboidCollider args={[0, 0, 0.01]} />
         <group
           position={[0, -1.0, 0]}

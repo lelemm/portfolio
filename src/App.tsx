@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Badge } from "./components/Badge";
 import useNarrowWidth from "./hooks/useNarrowWidth";
 import { Physics } from "@react-three/rapier";
-import { Bloom, DepthOfField, EffectComposer, Noise } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 
 function App() {
   const isNarrow = useNarrowWidth(600);
@@ -22,18 +22,12 @@ function App() {
             <Badge position={[0, 0, 0]} />
           </Physics>
           <ambientLight intensity={1.0} />
-          <directionalLight position={[0, 0, 5]} color="white" intensity={1} />
-          <pointLight position={[0, 2, 3]} intensity={0.8} />
+          <directionalLight position={[-0.7, 0, 5]} color="white" intensity={0.6} />
+          <pointLight position={[2, 0, 3]} intensity={0.8} />
           <EffectComposer>
-            <DepthOfField
-              focusDistance={0}
-              focalLength={0.02}
-              bokehScale={2}
-              height={480}
-            />
             <Bloom
-              luminanceThreshold={1}
-              luminanceSmoothing={4.9}
+              luminanceThreshold={0.96}
+              luminanceSmoothing={0.1}
               height={300}
             />
             <Noise opacity={0.02} />
