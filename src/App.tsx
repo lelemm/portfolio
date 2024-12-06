@@ -9,8 +9,8 @@ function App() {
   return (
     <div
       style={{
-        width: "95vw",
-        height: "70vh",
+        width: "100vw",
+        height: "100vh",
         display: "flex",
         flexDirection: isNarrow ? "column" : "row",
       }}
@@ -18,7 +18,7 @@ function App() {
       <div></div>
       <div id="canvas-container" style={{ flexGrow: 1 }}>
         <Canvas shadows>
-          <Physics interpolate gravity={[0, -100, 0]} timeStep={1 / 60}>
+          <Physics interpolate gravity={[0, -10, 0]} timeStep={1 / 60}>
             <Badge position={[0, 0, 0]} />
           </Physics>
           <ambientLight intensity={1.0} />
