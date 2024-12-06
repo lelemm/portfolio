@@ -1,0 +1,13 @@
+body {
+  color: rgba(255, 255, 255, 0.87);
+  background: url('/bg1.svg'), url('/noise.png');
+  background-size: 200vw 200vh, auto;
+  background-repeat: no-repeat, repeat;
+  background-position: center, top left;
+  background-blend-mode: overlay;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
